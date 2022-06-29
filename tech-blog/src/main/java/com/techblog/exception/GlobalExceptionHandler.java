@@ -106,4 +106,9 @@ public class GlobalExceptionHandler {
     {
         return new ResponseEntity<>(new ApiResponse(exception.getMessage(),false,String.valueOf(HttpStatus.NOT_FOUND),Instant.now()),HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(AdminCodeNotMatchException.class)
+    public ResponseEntity<ApiResponse> handleAdminCodeMismatchException(AdminCodeNotMatchException exception)
+    {
+        return new ResponseEntity<>(new ApiResponse(exception.getMessage(),false,String.valueOf(HttpStatus.BAD_REQUEST),Instant.now()),HttpStatus.BAD_REQUEST);
+    }
 }

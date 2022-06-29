@@ -11,11 +11,11 @@ public interface PostServices {
 
     PostDto getPostById(Integer id);
 
-    List<PostDto> getAllPosts();
+    List<PostDto> getAllPosts(Integer pageNumber,Integer pageSize);
 
     PostDto updatePost(PostDto postDto,Integer id);
 
-    List<PostDto> getPostsByUser(Integer userId);
+    List<PostDto> getPostsByUser(Integer userId,Integer pageNumber,Integer pageSize);
 
     void deletePost(Integer id);
 

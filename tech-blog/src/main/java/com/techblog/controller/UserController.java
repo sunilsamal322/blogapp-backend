@@ -23,9 +23,14 @@ public class UserController {
     private UserServices userServices;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto)
+    public ResponseEntity<UserDto> registerNormalUser(@Valid @RequestBody UserDto userDto)
     {
         return new ResponseEntity<>(userServices.createUser(userDto), HttpStatus.CREATED);
+    }
+    @PostMapping("/signup/admin")
+    public ResponseEntity<UserDto> registerAdminUser(@Valid @RequestBody UserDto userDto,@RequestParam String secretCode)
+    {
+        return new ResponseEntity<>(userServices.createAdminUser(userDto,secretCode), HttpStatus.CREATED);
     }
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")

@@ -3,6 +3,7 @@ package com.techblog.controller;
 import com.techblog.dto.ApiResponse;
 import com.techblog.dto.PostDto;
 import com.techblog.exception.ResourceNotFoundException;
+import com.techblog.helper.AppConstants;
 import com.techblog.repository.PostRepoitory;
 import com.techblog.repository.UserRepository;
 import com.techblog.services.FileServices;
@@ -39,6 +40,7 @@ public class PostController {
     private UserRepository userRepository;
 
 
+
     @Value("${project.image}")
     private String path;
 
@@ -53,9 +55,10 @@ public class PostController {
         return new ResponseEntity<>(postServices.getPostById(id),HttpStatus.OK);
     }
     @GetMapping("/")
-    public ResponseEntity<List<PostDto>> getAllPosts()
+    public ResponseEntity<List<PostDto>> getAllPosts(@RequestParam(defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                     @RequestParam(defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize)
     {
-        return new ResponseEntity<>(postServices.getAllPosts(),HttpStatus.OK);
+        return new ResponseEntity<>(postServices.getAllPosts(pageNumber,pageSize),HttpStatus.OK);
     }
     @PutMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto,@PathVariable Integer id)
@@ -69,9 +72,11 @@ public class PostController {
         return new ResponseEntity<>(new ApiResponse("post deleted successfully",true,String.valueOf(HttpStatus.OK), Instant.now()),HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<PostDto>> getPostsByUser(@RequestParam Integer userId)
+    public ResponseEntity<List<PostDto>> getPostsByUser(@RequestParam Integer userId,
+                                                        @RequestParam(defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                        @RequestParam(defaultValue = AppConstants.PAGE_SIZE,required = false)Integer pageSize)
     {
-        return new ResponseEntity<>(postServices.getPostsByUser(userId),HttpStatus.OK);
+        return new ResponseEntity<>(postServices.getPostsByUser(userId,pageNumber,pageSize),HttpStatus.OK);
     }
     @PostMapping("/image/upload")
     public ResponseEntity<ApiResponse> imageUpload(@RequestParam Integer postId,@RequestParam MultipartFile image) throws IOException

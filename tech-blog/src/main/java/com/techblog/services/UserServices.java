@@ -8,6 +8,8 @@ public interface UserServices {
 
     UserDto createUser(UserDto userDto);
 
+    UserDto createAdminUser(UserDto userDto,String secretCode);
+
     UserDto getUserById(Integer id);
 
     List<UserDto> getAllUsers();

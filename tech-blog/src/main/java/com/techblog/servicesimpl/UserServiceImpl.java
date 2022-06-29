@@ -1,6 +1,7 @@
 package com.techblog.servicesimpl;
 
 import com.techblog.dto.UserDto;
+import com.techblog.exception.AdminCodeNotMatchException;
 import com.techblog.exception.EmailAlreadyExistException;
 import com.techblog.exception.ResourceNotFoundException;
 import com.techblog.helper.AppConstants;
@@ -42,6 +43,27 @@ public class UserServiceImpl implements UserServices {
         User user=modelMapper.map(userDto,User.class);
         user.setAccountCreatedTime(new Date());
         Role role=roleRepoitory.findById(AppConstants.NORMAL_USER).get();
+        Set<Role> roles=new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userRepository.save(user);
+        return modelMapper.map(user,UserDto.class);
+    }
+
+    @Override
+    public UserDto createAdminUser(UserDto userDto, String secretCode) {
+        if(!secretCode.equals(AppConstants.secretCodeForAdmin))
+        {
+            throw new AdminCodeNotMatchException("Secret code didn't match,you are not able to register as admin");
+        }
+        if(userRepository.findByEmail(userDto.getEmail()).isPresent())
+        {
+            throw new EmailAlreadyExistException("Email already exists");
+        }
+        User user=modelMapper.map(userDto,User.class);
+        user.setAccountCreatedTime(new Date());
+        Role role=roleRepoitory.findById(AppConstants.ADMIN_USER).get();
         Set<Role> roles=new HashSet<>();
         roles.add(role);
         user.setRoles(roles);

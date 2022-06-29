@@ -11,11 +11,12 @@ import com.techblog.services.PostServices;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,8 +53,10 @@ public class PostServiceImpl implements PostServices {
     }
 
     @Override
-    public List<PostDto> getAllPosts() {
-        List<Post> posts=postRepoitory.findAll();
+    public List<PostDto> getAllPosts(Integer pageNumber,Integer pageSize) {
+        Pageable pageable= PageRequest.of(pageNumber,pageSize);
+        Page<Post> pagePosts=postRepoitory.findAll(pageable);
+        List<Post> posts=pagePosts.getContent();
         List<PostDto> postDtos=posts.stream().map(post->modelMapper.map(post,PostDto.class)).collect(Collectors.toList());
         return postDtos;
     }
@@ -68,9 +71,11 @@ public class PostServiceImpl implements PostServices {
     }
 
     @Override
-    public List<PostDto> getPostsByUser(Integer userId) {
+    public List<PostDto> getPostsByUser(Integer userId, Integer pageNumber, Integer pageSize) {
         User user=userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("user","id",userId));
-        List<Post> posts=postRepoitory.findByUser(user);
+        Pageable pageable= PageRequest.of(pageNumber,pageSize);
+        Page<Post> pagePosts=postRepoitory.findByUser(user,pageable);
+        List<Post> posts=pagePosts.getContent();
         List<PostDto> postDtos=posts.stream().map(post->modelMapper.map(post,PostDto.class)).collect(Collectors.toList());
         return postDtos;
     }
