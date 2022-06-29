@@ -1,7 +1,6 @@
 package com.techblog.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.techblog.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,9 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,8 +25,9 @@ public class PostDto {
     @NotBlank
     @Size(max = 20000,message = "content length can be maximum of 20000 characters")
     private String content;
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
-    private Instant postAddedTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern ="yyyy-MM-dd HH:mm:ss")
+    private Date postAddedTime;
     private String postImageName;
+    private List<CommentDto> comments=new ArrayList<>();
     private UserDto user;
 }

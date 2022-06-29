@@ -1,12 +1,12 @@
 package com.techblog.repository;
 
+import com.techblog.model.Comment;
 import com.techblog.model.Post;
-import com.techblog.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PostRepoitory extends JpaRepository<Post,Integer> {
+public interface CommentRepository extends JpaRepository<Comment,Integer> {
 
-    List<Post> findByUser(User user);
+    List<Comment> findByPost(Post post);
 }
