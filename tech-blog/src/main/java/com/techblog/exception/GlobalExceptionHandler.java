@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -110,5 +111,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> handleAdminCodeMismatchException(AdminCodeNotMatchException exception)
     {
         return new ResponseEntity<>(new ApiResponse(exception.getMessage(),false,String.valueOf(HttpStatus.BAD_REQUEST),Instant.now()),HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(RoleFetchingException.class)
+    public ResponseEntity<ApiResponse> handleNoSuchElementException(RoleFetchingException exception)
+    {
+        return new ResponseEntity<>(new ApiResponse("Something went wrong! Unable to register,Try later",false,String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR),Instant.now()),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ApiResponse> handleNoSuchElementException(NoSuchElementException exception)
+    {
+        return new ResponseEntity<>(new ApiResponse("Something went wrong! Try later",false,String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR),Instant.now()),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

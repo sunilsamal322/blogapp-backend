@@ -1,21 +1,21 @@
 package com.techblog.services;
 
 import com.techblog.dto.PostDto;
-import com.techblog.model.User;
-
-import java.util.List;
+import com.techblog.dto.PostResponse;
 
 public interface PostServices {
 
-    PostDto createPost(PostDto postDto, Integer userId);
+    PostDto createPost(PostDto postDto, Integer userId,Integer categoryId);
 
     PostDto getPostById(Integer id);
 
-    List<PostDto> getAllPosts(Integer pageNumber,Integer pageSize);
+    PostResponse getAllPosts(Integer pageNumber, Integer pageSize,String sortBy,String sortDir);
 
-    PostDto updatePost(PostDto postDto,Integer id);
+    PostDto updatePost(PostDto postDto,Integer id,Integer categoryId);
 
-    List<PostDto> getPostsByUser(Integer userId,Integer pageNumber,Integer pageSize);
+    PostResponse getPostsByUser(Integer userId,Integer pageNumber,Integer pageSize,String sortBy,String sortDir);
+
+    PostResponse getPostsByCategory(Integer categoryId,Integer pageNumber,Integer pageSize,String sortBy,String sortDir);
 
     void deletePost(Integer id);
 

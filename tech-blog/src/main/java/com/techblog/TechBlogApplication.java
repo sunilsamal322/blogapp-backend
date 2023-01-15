@@ -12,9 +12,11 @@ public class TechBlogApplication {
 		SpringApplication.run(TechBlogApplication.class, args);
 	}
 
+
 	@Bean
 	public ModelMapper modelMapper()
 	{
 		return new ModelMapper();
 	}
+
 }

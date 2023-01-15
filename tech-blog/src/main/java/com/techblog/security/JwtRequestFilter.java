@@ -27,6 +27,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private static final Logger logger= LoggerFactory.getLogger(JwtRequestFilter.class);
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -48,11 +49,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request,response);
     }
-    private String parseJwt(HttpServletRequest request)
-    {
-        String header=request.getHeader("Authorization");
-        if(StringUtils.hasText(header) && header.startsWith("Bearer "))
-        {
+    private String parseJwt(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        if (StringUtils.hasText(header) && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
         return null;

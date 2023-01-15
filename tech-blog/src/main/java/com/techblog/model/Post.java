@@ -24,7 +24,7 @@ public class Post {
     @Column(length = 500,nullable = false)
     private String title;
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false,length = 100000)
     private String content;
     @Column(name="post_time")
     private Date postAddedTime;
@@ -33,4 +33,6 @@ public class Post {
     private User user;
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Comment> comments;
+    @ManyToOne
+    private Category category;
 }

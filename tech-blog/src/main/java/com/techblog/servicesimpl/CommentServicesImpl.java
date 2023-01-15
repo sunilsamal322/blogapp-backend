@@ -6,14 +6,13 @@ import com.techblog.model.Comment;
 import com.techblog.model.Post;
 import com.techblog.model.User;
 import com.techblog.repository.CommentRepository;
-import com.techblog.repository.PostRepoitory;
+import com.techblog.repository.PostRepository;
 import com.techblog.repository.UserRepository;
 import com.techblog.services.CommentServices;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,14 +25,14 @@ public class CommentServicesImpl implements CommentServices {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private PostRepoitory postRepoitory;
+    private PostRepository postRepository;
     @Autowired
     private ModelMapper modelMapper;
 
     @Override
     public CommentDto addComment(CommentDto commentDto, Integer postId, Integer userId) {
 
-        Post post=postRepoitory.findById(postId).orElseThrow(()->new ResourceNotFoundException("post","id",postId));
+        Post post= postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("post","id",postId));
         User user=userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("user","id",userId));
         Comment comment=modelMapper.map(commentDto,Comment.class);
         comment.setPost(post);
@@ -53,7 +52,7 @@ public class CommentServicesImpl implements CommentServices {
 
     @Override
     public List<CommentDto> getCommentsByPost(Integer postId) {
-        Post post=postRepoitory.findById(postId).orElseThrow(()->new ResourceNotFoundException("post","id",postId));
+        Post post= postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("post","id",postId));
         List<Comment> comments=commentRepository.findByPost(post);
         List<CommentDto> commentDtos=comments.stream().map((comment)->modelMapper.map(comment,CommentDto.class)).collect(Collectors.toList());
         return commentDtos;

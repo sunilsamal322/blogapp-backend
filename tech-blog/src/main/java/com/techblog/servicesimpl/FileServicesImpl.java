@@ -4,7 +4,7 @@ import com.techblog.exception.FileFormatNotSupportException;
 import com.techblog.exception.ImageNotFoundException;
 import com.techblog.exception.ResourceNotFoundException;
 import com.techblog.model.Post;
-import com.techblog.repository.PostRepoitory;
+import com.techblog.repository.PostRepository;
 import com.techblog.services.FileServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class FileServicesImpl implements FileServices {
 
     @Autowired
-    private PostRepoitory postRepoitory;
+    private PostRepository postRepository;
 
     @Override
     public String uploadImage(String path, MultipartFile file) throws IOException {
@@ -50,14 +50,14 @@ public class FileServicesImpl implements FileServices {
 
     @Override
     public void deleteImage(String filePath,Integer postId)  {
-        Post post=postRepoitory.findById(postId).orElseThrow(()->new ResourceNotFoundException("post","id",postId));
+        Post post= postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("post","id",postId));
         String fileName=post.getPostImageName();
         if(!fileName.equals(""))
         {
             File file=new File(filePath+File.separator+fileName);
             file.delete();
             post.setPostImageName("");
-            postRepoitory.save(post);
+            postRepository.save(post);
         }
         else {
             throw new ImageNotFoundException("No images available for delete");

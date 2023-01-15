@@ -36,4 +36,6 @@ public class UserDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern ="yyyy-MM-dd HH:mm:ss")
     private Date accountCreatedTime;
     private Set<RoleDto> roles=new HashSet<>();
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String secretCode;
 }

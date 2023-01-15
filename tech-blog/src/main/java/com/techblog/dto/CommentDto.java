@@ -16,4 +16,5 @@ public class CommentDto {
     private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern ="yyyy-MM-dd HH:mm:ss")
     private Date commentTime;
+    private UserDto user;
 }
