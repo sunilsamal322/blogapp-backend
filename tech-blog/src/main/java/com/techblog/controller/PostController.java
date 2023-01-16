@@ -9,7 +9,6 @@ import com.techblog.model.Post;
 import com.techblog.model.Role;
 import com.techblog.model.User;
 import com.techblog.repository.PostRepository;
-import com.techblog.repository.UserRepository;
 import com.techblog.services.FileServices;
 import com.techblog.services.PostServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -41,8 +41,6 @@ public class PostController {
     @Autowired
     private PostRepository postRepository;
 
-    @Autowired
-    private UserRepository userRepository;
 
     @Value("${project.image}")
     private String path;
@@ -167,6 +165,12 @@ public class PostController {
             return new ResponseEntity<>(new ApiResponse("Unauthorized,Access Denied",false,String.valueOf(HttpStatus.UNAUTHORIZED),Instant.now()),HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<PostDto>> searchPostByTitle(@RequestParam String title){
+        return new ResponseEntity<>(postServices.searchPostByTitle(title),HttpStatus.OK);
+    }
+
     public boolean checkIsRoleAdmin()
     {
         User user=getLoginUser();

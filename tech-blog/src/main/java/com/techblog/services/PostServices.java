@@ -3,6 +3,8 @@ package com.techblog.services;
 import com.techblog.dto.PostDto;
 import com.techblog.dto.PostResponse;
 
+import java.util.List;
+
 public interface PostServices {
 
     PostDto createPost(PostDto postDto, Integer userId,Integer categoryId);
@@ -20,4 +22,6 @@ public interface PostServices {
     void deletePost(Integer id);
 
     void updateImageName(String imageName,Integer postId);
+
+    List<PostDto> searchPostByTitle(String title);
 }

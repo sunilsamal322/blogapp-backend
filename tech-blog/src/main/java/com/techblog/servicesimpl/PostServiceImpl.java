@@ -138,6 +138,11 @@ public class PostServiceImpl implements PostServices {
     }
 
     @Override
+    public List<PostDto> searchPostByTitle(String title) {
+        return postRepository.findByTitleLike("%"+title+"%").stream().map((post)->modelMapper.map(post,PostDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public void updateImageName(String imageName, Integer postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("post", "id", postId));
         if (!post.getPostImageName().equals("")) {
